@@ -13,6 +13,7 @@ export class Organization extends Component{
             OrganizationType:"",
             OrganizationDescription:"",
             OrganizationCountryCode:"",
+            OrganizationCountryName:"",
             OrganizationEmail:"",
             OrganizationPhone:"",
             OrganizationCode:"",
@@ -32,8 +33,14 @@ export class Organization extends Component{
     componentDidUpdate(){
         console.log(this.state.Id);
     }
-    changeOrganizationName = (e) => {
-        this.setState({OrganizationName: e.target.value});
+    changeFormElements = (e) => {
+        //e.preventDefault();
+        this.setState({
+            [e.target.name] : e.target.value
+        });
+    }
+    handleChange(){
+        console.log(document.getElementById("orgName").value);
     }
 
     addClick(){
@@ -44,6 +51,7 @@ export class Organization extends Component{
             OrganizationType:"",
             OrganizationDescription:"",
             OrganizationCountryCode:"",
+            OrganizationCountryName:"",
             OrganizationEmail:"",
             OrganizationPhone:"",
             OrganizationCode:""
@@ -59,10 +67,38 @@ export class Organization extends Component{
             OrganizationType: org.OrganizationType,
             OrganizationDescription:org.OrganizationDescription,
             OrganizationCountryCode:org.OrganizationCountryCode,
+            OrganizationCountryName:org.OrganizationCountryName,
             OrganizationEmail:org.OrganizationEmail,
             OrganizationPhone:org.OrganizationPhone,
             OrganizationCode:org.OrganizationCode
           }));    
+    }
+
+    createClick(){
+        fetch(variables.API_URL + 'organizations',{
+            method: 'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                Id: this.state.Id,
+                OrganizationName: this.state.OrganizationName,
+                OrganizationType: this.state.OrganizationType,
+                OrganizationDescription: this.state.OrganizationDescription,
+                OrganizationCountryCode: this.state.OrganizationCountryCode,
+                OrganizationCountryName: this.state.OrganizationCountryName,
+                OrganizationEmail: this.state.OrganizationEmail,
+                OrganizationPhone: this.state.OrganizationPhone,
+                OrganizationCode: this.state.OrganizationCode
+            })
+        }).then(res => res.json())
+        .then((result) => {
+            alert(result);
+            this.refreshList();
+        }, (error)=>{
+            alert('Failed');
+        })
     }
 
     render(){
@@ -73,11 +109,13 @@ export class Organization extends Component{
             OrganizationType,
             OrganizationDescription,
             OrganizationCountryCode,
+            OrganizationCountryName,
             OrganizationEmail,
             OrganizationPhone,
             OrganizationCode,
             Id
         }=this.state;
+        
         return(
             <div>
                 <button type="button"
@@ -164,42 +202,54 @@ export class Organization extends Component{
                                 <div className="modal-body">
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Organization Name</span>
-                                        <input type="text" className="form-control" value={OrganizationName} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationName' value={OrganizationName} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
+                                    {/* value={OrganizationName} */}
+                                    <div className="input-group mb-3">
+                                        <span className="input-group-text">Type</span>
+                                        <input name='OrganizationType' value={OrganizationType} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                    </div>
+                                    {/* onChange={this.changeOrganizationName} */}
 
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Description</span>
-                                        <input type="text" className="form-control" value={OrganizationDescription} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationDescription' value={OrganizationDescription} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Country Code</span>
-                                        <input type="text" className="form-control" value={OrganizationCountryCode} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationCountryCode' value={OrganizationCountryCode} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                    </div>
+
+                                    <div className="input-group mb-3">
+                                        <span className="input-group-text">Country Name</span>
+                                        <input name='OrganizationCountryName' value={OrganizationCountryName} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Email</span>
-                                        <input type="text" className="form-control" value={OrganizationEmail} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationEmail' value={OrganizationEmail} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Phone</span>
-                                        <input type="text" className="form-control" value={OrganizationPhone} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationPhone' value={OrganizationPhone} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">Code</span>
-                                        <input type="text" className="form-control" value={OrganizationCode} onChange={this.changeOrganizationName}/>
+                                        <input name='OrganizationCode' value={OrganizationCode} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     {Id==0?
-                                    <button type="button" className="btn btn-primary float-start">
+                                    <button type="button" className="btn btn-primary float-start" onClick={()=>this.createClick()}> 
                                         Create
                                     </button>
                                     :null}
 
                                     {Id!=0?
-                                    <button type="button" className="btn btn-primary float-start">
+                                    <button type="button" className="btn btn-primary float-start"
+                                    onClick={()=>this.createClick()}>
                                         Update
                                     </button>
                                     :null}
