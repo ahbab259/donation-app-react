@@ -110,7 +110,10 @@ export class Organization extends Component{
     }
 
     deleteClick(org){
-        if(window.confirm('Are you sure?')){
+        if(window.confirm('Are you sure?')){   
+            this.setState((state, props) => ({
+                Id: org.Id
+              }));         
         fetch(variables.API_URL+'organizations/'+org.Id,{
             method:'DELETE',
             headers:{
@@ -277,20 +280,12 @@ export class Organization extends Component{
                                     </button>
                                     :null}
 
-                                    {Id!=0 && modalTitle == "Edit Organization" ?
+                                    {Id!=0?
                                     <button type="button" className="btn btn-primary float-start"
                                     onClick={()=>this.createClick()}>
                                         Update
                                     </button>
                                     :null}
-
-                                    {Id!=0 && modalTitle == "Delete Organization" ?
-                                    <button type="button" className="btn btn-primary float-start"
-                                    onClick={()=>this.deleteOrg()}>
-                                        Delete
-                                    </button>
-                                    :null}
-
                                 </div>
 
                             </div>
