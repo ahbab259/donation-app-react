@@ -9,12 +9,12 @@ export class Project extends Component{
         this.state={
             projects:[],
             modalTitle:"",
-            ProjectName:"",
-            ProjectDescription:"",
-            ProjectCode:"",
-            ProjectOrganizationCode:"",
-            ProjectFund:"",
-            ProjectTargetFund:"",
+            PROJECT_NAME:"",
+            PROJECT_DESCRIPTION:"",
+            PROJECT_CODE:"",
+            PROJECT_ORGANIZATION_CODE:"",
+            PROJECT_FUND:"",
+            PROJECT_TARGET_FUND:"",
             Id:0
         }
     }
@@ -22,11 +22,15 @@ export class Project extends Component{
     refreshList(){
         fetch(variables.API_URL+'projects').then(response => response.json()).then(data => {
             this.setState({projects:data});
+            console.log(data);
         });
     }
 
     componentDidMount(){
         this.refreshList();        
+    }
+    componentDidUpdate(){
+        console.log(this.state.Id);
     }
 
     changeFormElements = (e) => {
@@ -35,17 +39,17 @@ export class Project extends Component{
             [e.target.name] : e.target.value
         });
     }
-
+    
     addButtonClick(){
         this.setState({
             modalTitle: "Add New Project",
             Id: 0,
-            ProjectName:"",
-            ProjectDescription:"",
-            ProjectCode:"",
-            ProjectOrganizationCode:"",
-            ProjectFund:"",
-            ProjectTargetFund:""
+            PROJECT_NAME:"",
+            PROJECT_DESCRIPTION:"",
+            PROJECT_CODE:"",
+            PROJECT_ORGANIZATION_CODE:"",
+            PROJECT_FUND:"",
+            PROJECT_TARGET_FUND:""
         });
     }
 
@@ -56,18 +60,17 @@ export class Project extends Component{
     //         Id: proj.Id
     //       }));    
     // }
-
     editButtonClick(proj){
         this.setState((state, props) => ({
             //counter: state.counter + props.increment,
             modalTitle: "Add New Project",
             Id: 0,
-            ProjectName :               proj.ProjectName,
-            ProjectDescription :        proj.ProjectDescription,
-            ProjectCode :               proj.ProjectCode,
-            ProjectOrganizationCode :   proj.ProjectOrganizationCode,
-            ProjectFund :               proj.ProjectFund,
-            ProjectTargetFund :         proj. ProjectTargetFund           
+            PROJECT_NAME :               proj.PROJECT_NAME,
+            PROJECT_DESCRIPTION :        proj.PROJECT_DESCRIPTION,
+            PROJECT_CODE :               proj.PROJECT_CODE,
+            PROJECT_ORGANIZATION_CODE :   proj.PROJECT_ORGANIZATION_CODE,
+            PROJECT_FUND :               proj.PROJECT_FUND,
+            PROJECT_TARGET_FUND :         proj. PROJECT_TARGET_FUND           
           }));    
     }
 
@@ -80,12 +83,12 @@ export class Project extends Component{
             },
             body:JSON.stringify({
                 Id: this.state.Id,
-                ProjectName : this.state.ProjectName,
-                ProjectDescription : this.state.ProjectDescription,
-                ProjectCode : this.state.ProjectCode,
-                ProjectOrganizationCode : this.state.ProjectOrganizationCode,
-                ProjectFund : this.state.ProjectFund,
-                ProjectTargetFund : this.state.ProjectTargetFund
+                PROJECT_NAME : this.state.PROJECT_NAME,
+                PROJECT_DESCRIPTION : this.state.PROJECT_DESCRIPTION,
+                PROJECT_CODE : this.state.PROJECT_CODE,
+                PROJECT_ORGANIZATION_CODE : this.state.PROJECT_ORGANIZATION_CODE,
+                PROJECT_FUND : this.state.PROJECT_FUND,
+                PROJECT_TARGET_FUND : this.state.PROJECT_TARGET_FUND
             })
         }).then(res => res.json())
         .then((result) => {
@@ -122,17 +125,17 @@ export class Project extends Component{
             })
         }
     }
-
+    
     render(){
         const{
             projects,
             modalTitle,
-            ProjectName,
-            ProjectDescription,
-            ProjectCode,
-            ProjectOrganizationCode,
-            ProjectFund,
-            ProjectTargetFund,
+            PROJECT_NAME,
+            PROJECT_DESCRIPTION,
+            PROJECT_CODE,
+            PROJECT_ORGANIZATION_CODE,
+            PROJECT_FUND,
+            PROJECT_TARGET_FUND,
             Id
         }=this.state;
 
@@ -141,7 +144,7 @@ export class Project extends Component{
                 <button type="button"
                 className="btn btn-primary m-2 float-end"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#exampleModal2"
                 onClick={()=>this.addButtonClick()}>
                     Add Project
                 </button>
@@ -169,20 +172,24 @@ export class Project extends Component{
                             <th>
                                 Project Target Fund
                             </th>
+                            <th>
+                                Options
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {projects.map(proj=> 
                             <tr key={proj.Id}>
                                 <td>{proj.Id}</td>
-                                <td>{proj.ProjectName}</td>
-                                <td>{proj.ProjectCode}</td>
-                                <td>{proj.ProjectOrganizationCode}</td>
-                                <td>{proj.ProjectFund}</td>
-                                <td>{proj. ProjectTargetFund}</td>
+                                <td>{proj.PROJECT_NAME}</td>
+                                <td>{proj.PROJECT_DESCRIPTION}</td>
+                                <td>{proj.PROJECT_CODE}</td>
+                                <td>{proj.PROJECT_ORGANIZATION_CODE}</td>
+                                <td>{proj.PROJECT_FUND}</td>
+                                <td>{proj. PROJECT_TARGET_FUND}</td>
                                 <td>
                                     <button type="button" className='btn btn-light mr-1'  data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#exampleModal2"
                 onClick={()=>this.editButtonClick(proj)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -190,7 +197,7 @@ export class Project extends Component{
                     </svg>
                                     </button>
                                     <button type="button" className='btn btn-light mr-1' data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#exampleModal2"
                 onClick={()=>this.deleteProject(proj)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                     <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
@@ -201,44 +208,43 @@ export class Project extends Component{
                             )}
                     </tbody>
                 </table>
-                    <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
+                    <div className="modal fade" id="exampleModal2" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">{modalTitle}</h5>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-
+                                
                                 <div className="modal-body">
                                     <div className="input-group mb-3">
-                                        <span className="input-group-text">Organization Name</span>
-                                        <input name='ProjectName' value={ProjectName} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                        <span className="input-group-text">Project Name</span>
+                                        <input name='PROJECT_NAME' value={PROJECT_NAME} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
-                                        <span className="input-group-text">Organization Name</span>
-                                        <input name='ProjectDescription' value={ProjectDescription} type="text" className="form-control" onChange={this.changeFormElements}/>
-                                    </div>
-                                    {/* value={OrganizationName} */}
-                                    <div className="input-group mb-3">
-                                        <span className="input-group-text">Type</span>
-                                        <input name='ProjectCode' value={ProjectCode} type="text" className="form-control" onChange={this.changeFormElements}/>
-                                    </div>
-                                    {/* onChange={this.changeOrganizationName} */}
-
-                                    <div className="input-group mb-3">
-                                        <span className="input-group-text">Description</span>
-                                        <input name='ProjectOrganizationCode' value={ProjectOrganizationCode} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                        <span className="input-group-text">Project Description</span>
+                                        <input name='PROJECT_DESCRIPTION' value={PROJECT_DESCRIPTION} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
-                                        <span className="input-group-text">Country Code</span>
-                                        <input name='ProjectFund' value={ProjectFund} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                        <span className="input-group-text">Project Code</span>
+                                        <input name='PROJECT_CODE' value={PROJECT_CODE} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     <div className="input-group mb-3">
-                                        <span className="input-group-text">Country Name</span>
-                                        <input name='ProjectTargetFund' value={ProjectTargetFund} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                        <span className="input-group-text">Project Organization Code</span>
+                                        <input name='PROJECT_ORGANIZATION_CODE' value={PROJECT_ORGANIZATION_CODE} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                    </div>
+
+                                    <div className="input-group mb-3">
+                                        <span className="input-group-text">Project Fund</span>
+                                        <input name='PROJECT_FUND' value={PROJECT_FUND} type="text" className="form-control" onChange={this.changeFormElements}/>
+                                    </div>
+
+                                    <div className="input-group mb-3">
+                                        <span className="input-group-text">Project Target Fund</span>
+                                        <input name='PROJECT_TARGET_FUND' value={PROJECT_TARGET_FUND} type="text" className="form-control" onChange={this.changeFormElements}/>
                                     </div>
 
                                     {Id==0?
