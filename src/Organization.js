@@ -39,9 +39,6 @@ export class Organization extends Component{
             [e.target.name] : e.target.value
         });
     }
-    handleChange(){
-        console.log(document.getElementById("orgName").value);
-    }
 
     addClick(){
         this.setState({
@@ -127,7 +124,7 @@ export class Organization extends Component{
             this.refreshList();
         },(error)=>{
             alert('Failed');
-        })
+            })
         }
     }
 
